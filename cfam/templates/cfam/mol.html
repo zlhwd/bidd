@@ -1,0 +1,85 @@
+{% extends 'cfam/base.html' %}
+{% block title %}{{show_name}} - Cfam{% endblock %}
+
+{% block body %}
+<table class="table table-bordered table-condensed">
+  <tbody>
+    <tr><th class="divider" colspan="2">Record Information</th></tr>
+    <tr>
+      <th style="width:15%">Cfam Molecule ID</th>
+      <td><strong>{{id}}</strong></td>
+    </tr>
+    {% if name %}<tr><th>Preferred Name</th><td><strong>{{name}}</strong></td></tr>{% endif %}
+    <tr><th>Functional Category</th><td>{{label}}</td></tr>
+    <tr><th>Chemical Formula</th><td>{{formula}}</td></tr>
+    <tr><th>Molecular Weight</th><td>{{molwt}}</td></tr>
+    {% if cid or chembl_id %}
+    <tr>
+      <th>External Links</th>
+      <td><ul class="list-unstyled" style="margin-bottom: 0;">
+        {% if cid %}<li><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{cid}}" target="_blank">PubChem CID: {{cid}}</a></li>{% endif %}
+        {% if chembl_id %}<li><a href="https://www.ebi.ac.uk/chembl/compound/inspect/{{chembl_id}}" target="_blank">ChEMBLdb ID: {{chembl_id}}</a></li>{% endif %}
+      </ul></td>
+    </tr>
+    {% endif %}
+    <tr><th>Familiy Membership</th><td>A {{fam_role}} of family <a href="{% url 'cfam:fam' fam_id %}" target="_blank">{{fam_id}}</a></td></tr>
+    <tr><th class="divider" colspan="2">Molecular Structure</th></tr>
+    <tr>
+      <th>Structure Image</th>
+      <td>
+        <a href="" data-target="#structure-zoom" data-toggle="modal"><img src="http://bidd2.nus.edu.sg/static_cfam/mol_images/{{id}}.png" onerror="this.onerror=null;this.src='http://bidd2.nus.edu.sg/static_cfam/mol_images/{{id}}.svg';" alt="{{id}}" style="max-height:150px;border:1px solid #dddddd"></a> (click on the thumbnail to view the full-sized image)
+        <div class="modal fade" id="structure-zoom">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button aria-hidden="true" class="close" data-dismiss="modal" type="button"> ×</button>
+                <h4 class="modal-title">Structure of {{show_name}}</h4></div>
+              <div class="modal-body">
+                <img src="http://bidd2.nus.edu.sg/static_cfam/mol_images/{{id}}.png" onerror="this.onerror=null;this.src='http://bidd2.nus.edu.sg/static_cfam/mol_images/{{id}}.svg';" alt="{{id}}">
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button"> Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr><th>SMILES</th><td>{{smi}}</td></tr>
+    <tr><th>InChI</th><td>{{inchi}}</td></tr>
+    <tr><th>InChIKey</th><td>{{inchikey}}</td></tr>
+  </tbody>
+</table>
+
+<h3>Sources</h3>
+<div class="well well-sm" style="background: #B2D0B4;">
+  {% for src_mol in mols %}
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong>{{forloop.counter}}. <a href="{{src_mol.link}}" target="_blank">{{src_mol.src}}: {{src_mol.src_id}}</a></strong></div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+        {% if src_mol.name %}<dt>Name</dt><dd>{{src_mol.name}}</dd>{% endif %}
+        <dt>Functional Category</dt><dd>{{src_mol.category|join:"; "}}</dd>
+        {% if src_mol.synonyms %}
+        <dt>Synonyms</dt>
+        <dd>
+          <div class="scroll-x" style="border:1px solid #dddddd;border-radius:5px;padding:0.5em;margin-top:0.5em">
+            <div style="display:table;" >
+              {% for syn_list in src_mol.synonyms %}
+              <ol start="{{syn_list.0}}" style="display:table-cell;">
+                {% for syn in syn_list.1 %}
+                <li>{{syn}}</li>
+                {% endfor %}
+              </ol>
+              {% endfor %}
+            </div>
+          </div>
+        </dd>
+        {% endif %}
+      </dl>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

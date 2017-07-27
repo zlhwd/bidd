@@ -1,0 +1,14 @@
+{% extends 'cfam/base.html' %}
+
+{% block body %}
+<main>
+  <div class="container-fluid">
+    <div class="well">
+    <p class="lead">Cfam is a chemical family database based on molecular fingerprint similarity. The funcional seeds of families were selected by hierarchically clustering approved drugs, clinical trial drugs, experimental drugs, food ingredients or additives, human metabolites, cosmetic ingredients, agrochemicals, toxic substances, peptides, highly active molecules, mederately active molecules and natural products respectively. Cfam currently contains 1,154,416 molecules and 122,154 families.</p>
+    </div>
+    <div class="row" align="center">
+      {{visit_count}} visits since 2017/06/28
+    </div>
+  </div>
+</main>
+{% endblock %}

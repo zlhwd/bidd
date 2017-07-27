@@ -1,0 +1,65 @@
+{% extends 'cfam/base.html' %}
+{% block title %}{{show_name}} - Cfam{% endblock %}
+
+{% block body %}
+
+<h1>family detail page for {{id}}</h1>
+
+<div id="piechart" style="width: 900px; height: 500px;"></div>
+
+<h2>seeds:</h2><br>
+<div class="row">
+  {% for seed in seeds %}
+  <div class="col-sm-4 col-md-2">
+    <div class="thumbnail">
+      <div class="caption scroll-x">
+        <h4>{{seed.id}}</h4>
+        <h4><b>{{seed.name}}</b></h4>
+        <h4>{{seed.label}}</h4>
+      </div>
+      <img alt="{{seed.id}}" src="http://bidd2.nus.edu.sg/static_cfam/mol_images/{{seed.id}}.png" 
+      onerror="this.onerror=null;this.src='http://bidd2.nus.edu.sg/static_cfam/mol_images/{{seed.id}}.svg';">
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if members %}
+<h2>members:</h2><br>
+<div class="row">
+  {% for member in members %}
+  <div class="col-sm-4 col-md-2">
+    <div class="thumbnail">
+      <div class="caption scroll-x">
+        <h4>{{member.id}}</h4>
+        <h4><b>{{member.name}}</b></h4>
+        <h4>{{member.label}}</h4>
+      </div>
+      <img alt="{{member.id}}" src="http://bidd2.nus.edu.sg/static_cfam/mol_images/{{member.id}}.png" 
+      onerror="this.onerror=null;this.src='http://bidd2.nus.edu.sg/static_cfam/mol_images/{{member.id}}.svg';">
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+
+    var data = google.visualization.arrayToDataTable(JSON.parse('{{pie_json|safe}}'));
+
+    var options = {
+      title: 'Seeds distribution of {{show_name}}'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+    chart.draw(data, options);
+  }
+</script>
+
+{% endblock %}

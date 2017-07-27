@@ -1,0 +1,57 @@
+{% extends 'cfam/base.html' %}
+{% block title %}Families - Cfam{% endblock %}
+
+{% block body %}
+<div class="well well-sm" id="filter-container">
+  <form class="form-inline" action="" accept-charset="UTF-8" method="get" id="filter-form">
+    <h6>Filter by category:</h6>
+    <div class="filter-controls clearfix">
+      {% for label in labels %}
+      <div class="checkbox">
+        <label><input type="checkbox" name="category" value="{{label}}" {% if label in selected_labels %}checked{% endif %}>{{label}}</label>
+      </div>
+      {% endfor %}
+    </div>
+    <h6>Jump to page:</h6>
+    <input type="number" name="page" class="input-sm form-control" min="1" max="{{max_page}}" value="{{page}}">
+    <div align="left" id="form-btns">
+      <button type="reset" class="btn btn-default btn-xs" id="btn-clear">Clear</button>
+      <button type="submit" class="btn btn-primary btn-xs">Display</button>
+    </div>
+  </form>
+</div>
+
+<div class="page_info" style="margin:1em 0em">Displaying page <b>{{page}} / {{max_page}}</b> of <b>{{all_fams_num}}</b> families in total</div>
+
+<table class="table table-hover table-condensed">
+  <thead>
+    <tr>
+      <th style="width:20%">Cfam Family ID</th>
+      <th style="width:20%">Name</th>
+      <th style="width:20%">Category</th>
+      <th style="width:20%">Number of Seeds</th>
+      <th style="width:20%">Number of Members</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for fam in fams %}
+    <tr>
+      <td><a href="{% url 'cfam:fam' fam.id %}" target="_blank">{{fam.id}}</a></td>
+      <td>{{fam.name}}</td>
+      <td>{{fam.label}}</td>
+      <td>{{fam.seeds|length}}</td>
+      <td>{{fam.members|length}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  $('#btn-clear').on('click',function() {
+    var form = $(this).closest("form")
+    form.find("input[type='checkbox']").attr("checked",false);
+    form.find("input[type='number']").attr("value",1)
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'cfam/base.html' %}
+{% block title %}Molecules - Cfam{% endblock %}
+
+{% block body %}
+<div class="well well-sm" id="filter-container">
+  <form class="form-inline" action="" accept-charset="UTF-8" method="get" id="filter-form">
+    <h6>Filter by category:</h6>
+    <div class="filter-controls clearfix">
+      {% for label in labels %}
+      <div class="checkbox">
+        <label><input type="checkbox" name="category" value="{{label}}" {% if label in selected_labels %}checked{% endif %}>{{label}}</label>
+      </div>
+      {% endfor %}
+    </div>
+    <h6>Jump to page:</h6>
+    <input type="number" name="page" class="input-sm form-control" min="1" max="{{max_page}}" value="{{page}}">
+    <div align="left" id="form-btns">
+      <button type="reset" class="btn btn-default btn-xs" id="btn-clear">Clear</button>
+      <button type="submit" class="btn btn-primary btn-xs">Display</button>
+    </div>
+  </form>
+</div>
+
+<div class="page_info" style="margin:1em 0em">Displaying page <b>{{page}} / {{max_page}}</b> of <b>{{all_mols_num}}</b> molecules in total</div>
+
+<table class="table table-hover table-condensed">
+  <thead>
+    <tr>
+      <th style="width:20%">Cfam Molecule ID</th>
+      <th style="width:20%">Name</th>
+      <th style="width:20%">Category</th>
+      <th style="width:20%">Structure</th>
+      <th style="width:20%">Family</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for mol in mols %}
+    <tr>
+      <td><a href="{% url 'cfam:mol' mol.id %}" target="_blank">{{mol.id}}</a></td>
+      <td>{{mol.name}}</td>
+      <td>{{mol.label}}</td>
+      <td>
+        <img src="http://bidd2.nus.edu.sg/static_cfam/mol_images/{{mol.id}}.png" onerror="this.onerror=null;this.src='http://bidd2.nus.edu.sg/static_cfam/mol_images/{{mol.id}}.svg';" alt="{{mol.id}}" style="max-height:150px;border:1px solid #dddddd">
+      </td>
+      <td><a href="{% url 'cfam:fam' mol.fam_id %}" target="_blank">{{mol.fam_id}}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  $('#btn-clear').on('click',function() {
+    var form = $(this).closest("form")
+    form.find("input[type='checkbox']").attr("checked",false);
+    form.find("input[type='number']").attr("value",1)
+  });
+</script>
+
+{% endblock %}

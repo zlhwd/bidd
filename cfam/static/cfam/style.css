@@ -1,0 +1,45 @@
+.navbar {
+	border-radius: 0;
+}
+
+.navbar-brand {
+	/*font-family: 'Lato', sans-serif;*/
+	font-family: 'Sofadi One', cursive;
+	font-size: 200%;
+}
+
+.scroll-x {
+	white-space: nowrap;
+	overflow-x: auto;
+}
+
+#filter-container {
+    font-size: 12px;
+    margin-top: 1em;
+    overflow: hidden;
+}
+
+#filter-container .filter-controls {
+    margin-left: 1em;
+}
+
+#filter-container .filter-controls .checkbox {
+    margin-right: 1em;
+    padding-left: .1em;
+}
+
+#filter-container .filter-controls .checkbox input {
+    margin-right: 0.4em;
+}
+
+#form-btns {
+	margin-top: 1em;
+}
+
+th.divider {
+    background: #555555;
+    color: #F0F0F0;
+    font-weight: normal;
+    text-shadow: black 0px -1px 0px;
+}
+
